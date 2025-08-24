@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>My PDF</title>
+    <meta name="description" content="View and download the hosted PDF file." />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>📄</text></svg>">
+    <style>
+      :root {
+        --bg: #0b1020;
+        --card: #121933;
+        --text: #e6e9f3;
+        --muted: #98a1c0;
+        --accent: #6ea8fe;
+        --radius: 18px;
+      }
+      * { box-sizing: border-box; }
+      html, body { height: 100%; }
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+        background: radial-gradient(1300px 700px at 20% -10%, #1a245a 0, transparent 60%),
+                    radial-gradient(1200px 600px at 120% 10%, #33417c 0, transparent 50%),
+                    var(--bg);
+        color: var(--text);
+        display: grid;
+        place-items: center;
+        padding: 24px;
+      }
+      .wrap {
+        width: min(1100px, 100%);
+        display: grid;
+        gap: 16px;
+      }
+      header {
+        background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+        border: 1px solid rgba(255,255,255,.08);
+        border-radius: var(--radius);
+        padding: 16px 18px;
+        backdrop-filter: blur(8px);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 10px 30px rgba(0,0,0,.25);
+      }
+      h1 { font-size: clamp(18px, 3vw, 24px); margin: 0; }
+      .muted { color: var(--muted); font-size: 14px; }
+      .actions { display: flex; gap: 10px; align-items: center; }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 40px;
+        padding: 0 14px;
+        border-radius: 12px;
+        border: 1px solid rgba(255,255,255,.15);
+        background: #202a57;
+        color: var(--text);
+        text-decoration: none;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform .06s ease, box-shadow .2s ease, background .2s ease;
+        box-shadow: 0 6px 18px rgba(0,0,0,.24);
+      }
+      .btn:hover { transform: translateY(-1px); background: #263063; }
+      .btn:active { transform: translateY(0); }
+      .viewer {
+        background: var(--card);
+        border: 1px solid rgba(255,255,255,.1);
+        border-radius: var(--radius);
+        overflow: hidden;
+        min-height: 70vh;
+        box-shadow: 0 16px 40px rgba(0,0,0,.35);
+      }
+      .fallback { padding: 24px; }
+      .fallback p { margin: 0 0 12px; }
+      .note { font-size: 13px; color: var(--muted); }
+      footer { text-align: center; color: var(--muted); font-size: 12px; }
+      code { background: rgba(255,255,255,.08); padding: 2px 6px; border-radius: 6px; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <div>
+          <h1>📄 My PDF</h1>
+          <div class="muted">Fast, simple hosting via GitHub Pages</div>
+        </div>
+        <div class="actions">
+          <!-- UPDATE THE href BELOW TO YOUR PDF PATH -->
+          <a class="btn" id="openNew" href="files/your-file.pdf" target="_blank" rel="noopener">Open in new tab</a>
+          <a class="btn" id="downloadBtn" href="files/your-file.pdf" download>Download</a>
+        </div>
+      </header>
+
+      <section class="viewer" id="viewer">
+        <!--
+          Place your PDF at: /files/your-file.pdf
+          Or update the src + links with your own path.
+        -->
+        <object id="pdfObj" data="files/your-file.pdf" type="application/pdf" width="100%" height="100%">
+          <div class="fallback">
+            <p><strong>Preview not supported in this browser.</strong></p>
+            <p>
+              <a class="btn" href="files/your-file.pdf" target="_blank" rel="noopener">Open PDF</a>
+              <a class="btn" href="files/your-file.pdf" download>Download</a>
+            </p>
+            <p class="note">If the inline preview doesn't load, use the buttons above.</p>
+          </div>
+        </object>
+      </section>
+
+      <footer>
+        <p>
+          Tip: keep your PDF under <code>files/</code> and this page at the repo root or in <code>/docs</code> if you enable GitHub Pages from <em>docs/</em>.
+        </p>
+      </footer>
+    </div>
+
+    <script>
+      // Make the viewer height fill the viewport minus header/footer
+      const viewer = document.getElementById('viewer');
+      const resize = () => {
+        const rect = viewer.getBoundingClientRect();
+        const top = rect.top + window.scrollY; // account for header height
+        const footerH = 60; // approximate footer height
+        const minH = Math.max(480, window.innerHeight - (top + footerH + 24));
+        viewer.style.minHeight = minH + 'px';
+      };
+      window.addEventListener('resize', resize, { passive: true });
+      window.addEventListener('load', resize);
+    </script>
+  </body>
+</html>
